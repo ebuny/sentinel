@@ -20,7 +20,9 @@ class ErrorBoundary extends Component {
       return (
         <div className="app-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ textAlign: 'center', maxWidth: 500 }}>
-            <div className="logo-icon" style={{ width: 60, height: 60, fontSize: 20, margin: '0 auto 16px' }}>SS</div>
+            <div className="logo-icon" style={{ width: 60, height: 60, fontSize: 20, margin: '0 auto 16px', background: 'none' }}>
+              <img src="/logo.png" alt="Sentinel Logo" style={{ width: '100%', height: '100%', borderRadius: 'inherit', objectFit: 'cover' }} />
+            </div>
             <h2 style={{ margin: '0 0 12px' }}>Dashboard Error</h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: 14, marginBottom: 16 }}>
               An unexpected rendering error occurred. This is usually caused by unexpected API data.
@@ -348,7 +350,9 @@ function App() {
     return (
       <div className="app-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center' }}>
-          <div className="logo-icon" style={{ width: 60, height: 60, fontSize: 20, margin: '0 auto 16px' }}>SS</div>
+          <div className="logo-icon" style={{ width: 60, height: 60, fontSize: 20, margin: '0 auto 16px', background: 'none' }}>
+            <img src="/logo.png" alt="Sentinel Logo" style={{ width: '100%', height: '100%', borderRadius: 'inherit', objectFit: 'cover' }} />
+          </div>
           <h2 style={{ margin: 0 }}>SENTINEL</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>Connecting to backend...</p>
         </div>
@@ -362,7 +366,9 @@ function App() {
       {/* Header */}
       <header className="app-header">
         <div className="logo-section">
-          <div className="logo-icon">SS</div>
+          <div className="logo-icon" style={{ background: 'none' }}>
+            <img src="/logo.png" alt="Sentinel Logo" style={{ width: '100%', height: '100%', borderRadius: 'inherit', objectFit: 'cover' }} />
+          </div>
           <div className="logo-text">
             <h1>SENTINEL</h1>
             <span>BSC Sentiment Strategy Agent</span>
