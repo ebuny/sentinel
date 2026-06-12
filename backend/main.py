@@ -139,11 +139,16 @@ def read_root():
 def get_market_data():
     from concurrent.futures import ThreadPoolExecutor, as_completed
 
+    # Initialize with local cached / fallback data so that the frontend never receives empty results
     results = {
-        "fear_greed": {"value": 50, "classification": "Neutral", "source": "fallback"},
-        "prices": {},
-        "trends": [],
-        "funding_rates": {},
+        "fear_greed": dict(cmc_service._cached_fear_greed),
+        "prices": dict(cmc_service._cached_prices),
+        "trends": list(cmc_service._cached_trends),
+        "funding_rates": {
+            "BNB-PERP": 0.0,
+            "BTC-PERP": 0.0,
+            "ETH-PERP": 0.0
+        },
     }
 
     def fetch_fg():
