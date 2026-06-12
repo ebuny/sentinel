@@ -270,6 +270,38 @@ class TWAKService:
         ])
         return result
 
+    # ─── Competition Registration ──────────────────────────────────────
+
+    def register_for_competition(self) -> dict | None:
+        """
+        Register the agent wallet address for the BNB Hackathon.
+        Executes: `twak compete register`
+        """
+        # If in mock mode, simulate successful registration
+        if self.mock_mode:
+            tx_hash = self._mock_tx_hash()
+            return {
+                "success": True,
+                "tx_hash": tx_hash,
+                "contract": "0x212c61b9b72c95d95bf29cf032f5e5635629aed5",
+                "mode": "simulated"
+            }
+
+        # If live, run CLI
+        if self.twak_available:
+            result = self._run_twak(["compete", "register"], timeout=30)
+            if result:
+                tx_hash = "0x"
+                if isinstance(result, dict):
+                    tx_hash = result.get("txHash", result.get("tx_hash", result.get("hash", "0x")))
+                return {
+                    "success": True,
+                    "tx_hash": tx_hash,
+                    "contract": "0x212c61b9b72c95d95bf29cf032f5e5635629aed5",
+                    "mode": "live"
+                }
+        return None
+
     # ─── Utility ───────────────────────────────────────────────────────
 
     @staticmethod

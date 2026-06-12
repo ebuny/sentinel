@@ -424,6 +424,30 @@ def handle_chat_message(req: ChatMessageRequest):
                 response_text = f"Could not find pricing data for **{token_name}**. Try using the token's ticker symbol (e.g., BTC, ETH, SOL)."
         else:
             response_text = "Which token would you like to check? Try: `price of BNB` or `what is SOL worth?`"
+    # ── Competition Registration ──
+    elif any(kw in msg for kw in ["register for competition", "register hackathon", "competition_register", "compete register", "register"]):
+        res = twak_service.register_for_competition()
+        if res and res.get("success"):
+            mode_tag = "LIVE" if res.get("mode") == "live" else "SIMULATED"
+            identity = commerce_service.register_identity()
+            agent_wallet = identity.get("agent_wallet", "unknown")
+            response_text = (
+                f"**On-Chain Competition Registration ({mode_tag})**\n\n"
+                f"Successfully submitted the registration transaction for the BNB Hackathon!\n\n"
+                f"- **Agent Wallet Address:** `{agent_wallet}`\n"
+                f"- **Competition Contract:** `{res['contract']}`\n"
+                f"- **Transaction Hash:** `{res['tx_hash']}`\n\n"
+                f"Your agent is registered to trade in the competition."
+            )
+        else:
+            response_text = (
+                f"**Registration Attempt Failed**\n\n"
+                f"I could not execute the on-chain registration because the Trust Wallet Agent Kit (TWAK) CLI is not installed or configured.\n\n"
+                f"To register your agent, please run this on your command line:\n"
+                f"```bash\n"
+                f"twak compete register\n"
+                f"```"
+            )
 
     # ── Help ──
     elif any(kw in msg for kw in ["help", "what can you do", "commands", "how to use"]):
@@ -434,7 +458,8 @@ def handle_chat_message(req: ChatMessageRequest):
             "- `show my balances` -- Trust Wallet portfolio\n"
             "- `swap 0.5 BNB to CAKE` -- Execute a token swap\n"
             "- `rebalance my wallet` -- Auto-rebalance by strategy\n"
-            "- `who are you?` -- Agent identity info\n\n"
+            "- `who are you?` -- Agent identity info\n"
+            "- `register for competition` -- Submit on-chain hackathon registration\n\n"
             "I can look up the price of **any cryptocurrency** -- just ask!"
         )
 
