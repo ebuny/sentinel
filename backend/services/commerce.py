@@ -95,14 +95,24 @@ class CommerceService:
         # ── Simulated identity ──
         # Deterministic so it doesn't change on every call
         agent_id = f"agent-sentinel-{settings.ERC8004_REGISTRY_ADDR[-6:]}"
-        # Derive a deterministic wallet from the private key seed
-        wallet_suffix = settings.AGENT_PRIVATE_KEY[2:32] if len(settings.AGENT_PRIVATE_KEY) > 32 else "534e544e4c2026ae30626e63616c616d"
+        # Derive the actual public address from the private key safely
+        agent_wallet = "0xE938c93f5f891D5B9411249B3684a29475824bF2"  # Sane default
+        try:
+            from eth_account import Account
+            pk = settings.AGENT_PRIVATE_KEY.strip()
+            if not pk.startswith("0x"):
+                pk = "0x" + pk
+            acct = Account.from_key(pk)
+            agent_wallet = acct.address
+        except Exception as e:
+            print(f"[Commerce] Failed to derive public wallet address: {e}")
+
         identity = {
             "status": "REGISTERED",
             "agent_id": agent_id,
             "token_id": 4022026,
             "registry_contract": settings.ERC8004_REGISTRY_ADDR,
-            "agent_wallet": f"0x{wallet_suffix}",
+            "agent_wallet": agent_wallet,
             "mode": "simulated",
         }
         self._identity_cache = identity
