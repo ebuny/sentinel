@@ -181,7 +181,7 @@ class CMCService:
         wanted = {f"{s}USDT" for s in symbols if s != "USDT"}
         try:
             res = requests.get(
-                "https://data-api.binance.vision/api/v3/ticker/price",
+                "https://api.binance.com/api/v3/ticker/price",
                 timeout=(2, 3),  # (connect, read) timeout
             )
             if res.status_code == 200:
@@ -213,7 +213,7 @@ class CMCService:
         try:
             symbols_param = '["' + '","'.join(bsc_tokens.keys()) + '"]'
             res = requests.get(
-                "https://data-api.binance.vision/api/v3/ticker/24hr",
+                "https://api.binance.com/api/v3/ticker/24hr",
                 params={"symbols": symbols_param},
                 timeout=(2, 3),
             )
